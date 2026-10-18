@@ -6,115 +6,140 @@
 <title>10 ATP Server</title>
 <style>
   :root {
-    --bg: #1e1e2e;
-    --kart: #2e2e42;
+    --bg: #12121c;
+    --kart: rgba(46, 46, 66, 0.65);
     --mor: #7c4dff;
     --turkuaz: #00bcd4;
     --yesil: #4caf50;
     --acik: #7cfc00;
     --kapali: #ff5555;
-    --soluk: #bbb;
+    --soluk: #aab;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
   body {
     min-height: 100vh;
-    background: var(--bg);
+    background: radial-gradient(circle at 20% 10%, #25254a 0%, var(--bg) 55%);
     color: #fff;
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     overflow-x: hidden;
   }
 
-  /* Giriş animasyonu: iki daire köşelerden kayar */
+  /* Köşelerden kayan daireler */
   .daire {
     position: fixed;
-    width: 300px;
-    height: 300px;
+    width: 340px;
+    height: 340px;
     border-radius: 50%;
-    opacity: 0.35;
+    filter: blur(30px);
+    opacity: 0.4;
     pointer-events: none;
     z-index: 0;
   }
-  .sol-ust {
-    background: var(--mor);
-    top: -100px;
-    left: -100px;
-    animation: soldan 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  }
-  .sag-alt {
-    background: var(--turkuaz);
-    bottom: -100px;
-    right: -100px;
-    animation: sagdan 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  }
+  .sol-ust { background: var(--mor); top: -120px; left: -120px; animation: soldan 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .sag-alt { background: var(--turkuaz); bottom: -120px; right: -120px; animation: sagdan 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
   @keyframes soldan { from { transform: translate(-200px, -200px); } to { transform: none; } }
   @keyframes sagdan { from { transform: translate(200px, 200px); } to { transform: none; } }
 
-  /* Arka plan: yukarıdan aşağı akan yıldızlar */
-  #yildizlar {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .yildiz {
-    position: absolute;
-    top: -10px;
-    background: #fff;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: akis linear infinite;
-  }
+  /* Akan yıldızlar */
+  #yildizlar { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  .yildiz { position: absolute; top: -10px; background: #fff; border-radius: 50%; opacity: 0.7; animation: akis linear infinite; }
   @keyframes akis { to { transform: translateY(110vh); } }
 
   main {
     position: relative;
     z-index: 1;
-    max-width: 520px;
+    max-width: 560px;
     margin: 0 auto;
-    padding: 60px 24px 40px;
+    padding: 70px 24px 40px;
+    text-align: center;
+    animation: gir 0.9s ease both;
   }
-  h1 { font-size: 40px; color: red; margin: 0 0 20px; }
+  @keyframes gir { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 
+  h1 {
+    font-size: clamp(36px, 9vw, 56px);
+    margin: 0 0 6px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #ff4d4d, #ff8a5c, var(--mor));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .alt { color: var(--soluk); margin: 0 0 36px; font-size: 15px; }
+
+  /* Büyük, silik yazılı IP kutusu: tıklayınca yazı kaybolur */
   input {
     width: 100%;
-    padding: 14px;
+    padding: 18px 10px;
     border: 0;
-    border-radius: 10px;
-    background: var(--kart);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.18);
+    background: transparent;
     color: #fff;
-    font-size: 16px;
+    font-size: clamp(28px, 8vw, 44px);
+    font-weight: 700;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
+  input::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+    opacity: 1;
+    transition: opacity 0.25s;
+  }
+  input:focus::placeholder { opacity: 0; }
+  input:focus {
+    outline: none;
+    border-bottom-color: var(--turkuaz);
+    box-shadow: 0 10px 20px -14px var(--turkuaz);
+  }
+
   button {
     width: 100%;
-    margin-top: 12px;
-    padding: 14px;
+    margin-top: 22px;
+    padding: 15px;
     border: 0;
-    border-radius: 10px;
-    background: var(--yesil);
+    border-radius: 14px;
+    background: linear-gradient(90deg, var(--yesil), #2e9e6a);
     color: #fff;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: bold;
     cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
   }
-  button.ikincil { background: var(--kart); }
-  button:focus-visible, input:focus-visible { outline: 2px solid var(--turkuaz); outline-offset: 2px; }
+  button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -8px var(--yesil); }
+  button:active { transform: translateY(0); }
+  button.ikincil { background: rgba(255, 255, 255, 0.1); margin-top: 16px; }
+  button.ikincil:hover { box-shadow: none; background: rgba(255, 255, 255, 0.16); }
+  button:focus-visible { outline: 2px solid var(--turkuaz); outline-offset: 2px; }
 
   #kart {
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 12px;
+    margin-top: 28px;
+    padding: 24px;
+    border-radius: 18px;
     background: var(--kart);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    text-align: left;
+    animation: gir 0.5s ease both;
   }
-  .durum { font-size: 24px; margin: 0 0 10px; }
+  .ust { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+  .ikon {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    image-rendering: pixelated;
+    background: rgba(255, 255, 255, 0.06);
+    flex: none;
+  }
+  .durum { font-size: 26px; font-weight: 700; margin: 0; }
   .acik { color: var(--acik); }
   .kapali { color: var(--kapali); }
-  .satir { font-size: 18px; margin: 8px 0 0; overflow-wrap: anywhere; }
-  .motd { font-size: 16px; color: var(--soluk); margin-top: 12px; white-space: pre-line; }
+  .satir { font-size: 18px; margin: 10px 0 0; overflow-wrap: anywhere; }
+  .motd { font-size: 16px; color: var(--soluk); margin-top: 14px; white-space: pre-line; padding-left: 12px; border-left: 3px solid var(--mor); }
 
   @media (prefers-reduced-motion: reduce) {
-    .daire, .yildiz { animation: none; }
+    .daire, .yildiz, main, #kart { animation: none; }
   }
 </style>
 </head>
@@ -125,22 +150,23 @@
 
   <main>
     <h1>10 ATP Server</h1>
-    <input id="ip" type="text" placeholder="Sunucu IP" autocapitalize="none" autocomplete="off">
+    <p class="alt">Sunucunun durumunu anında kontrol et</p>
+    <input id="ip" type="text" placeholder="Sunucu IP girin" autocapitalize="none" autocomplete="off" spellcheck="false">
     <button id="kontrol">Kontrol Et</button>
     <div id="kart" hidden></div>
   </main>
 
 <script>
-  // Kendi sunucunun IP adresini buraya yaz (tırnakları silme)
-  const SUNUCU_IP = "hypixel.net";
+  // İstersen kendi sunucunun IP adresini buraya yaz (boş bırakırsan kutu boş açılır)
+  const SUNUCU_IP = "";
 
   const ipKutusu = document.getElementById("ip");
   const kart = document.getElementById("kart");
   ipKutusu.value = SUNUCU_IP;
 
-  // Yıldızları oluştur
+  // Yıldızlar
   const yildizAlani = document.getElementById("yildizlar");
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 30; i++) {
     const y = document.createElement("div");
     const boyut = 2 + Math.random() * 3;
     y.className = "yildiz";
@@ -151,17 +177,17 @@
     yildizAlani.appendChild(y);
   }
 
-  function satirEkle(metin, sinif) {
+  function satirEkle(metin, sinif, ust) {
     const p = document.createElement("p");
     p.className = sinif || "satir";
     p.textContent = metin;
-    kart.appendChild(p);
+    (ust || kart).appendChild(p);
     return p;
   }
 
   async function kontrolEt() {
     const ip = ipKutusu.value.trim();
-    if (!ip) return;
+    if (!ip) { ipKutusu.focus(); return; }
     kart.hidden = false;
     kart.replaceChildren();
     satirEkle("Yükleniyor...", "satir");
@@ -169,7 +195,19 @@
       const res = await fetch("https://api.mcsrvstat.us/3/" + encodeURIComponent(ip));
       const d = await res.json();
       kart.replaceChildren();
-      satirEkle(d.online ? "🟢 Açık" : "🔴 Kapalı", "durum " + (d.online ? "acik" : "kapali"));
+
+      const ust = document.createElement("div");
+      ust.className = "ust";
+      // Sunucu resmi (ikon)
+      const img = document.createElement("img");
+      img.className = "ikon";
+      img.alt = "Sunucu ikonu";
+      img.src = d.icon || ("https://api.mcsrvstat.us/icon/" + encodeURIComponent(ip));
+      img.onerror = () => img.remove();
+      ust.appendChild(img);
+      satirEkle(d.online ? "🟢 Açık" : "🔴 Kapalı", "durum " + (d.online ? "acik" : "kapali"), ust);
+      kart.appendChild(ust);
+
       if (d.online) {
         satirEkle("Oyuncu: " + (d.players?.online ?? "?") + "/" + (d.players?.max ?? "?"));
         satirEkle("Sürüm: " + (d.version ?? "?"));
@@ -198,7 +236,7 @@
 
   document.getElementById("kontrol").addEventListener("click", kontrolEt);
   ipKutusu.addEventListener("keydown", (e) => { if (e.key === "Enter") kontrolEt(); });
-  kontrolEt();
+  if (SUNUCU_IP) kontrolEt();
 </script>
 </body>
 </html>
